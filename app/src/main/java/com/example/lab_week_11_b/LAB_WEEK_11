@@ -1,0 +1,64 @@
+Answer these questions based on Part 3 of the tutorial:
+1. When a user takes a picture, that picture is stored in a path based on the given
+URI. In which part of the code handles this? (Copy that part of the code as the
+answer)
+
+Kode bagian ini yang akan mengambil foto dan menyimpannya ke direktori sementara (URI) yang sudah di generate.
+
+takePictureLauncher =
+    registerForActivityResult(ActivityResultContracts.TakePicture()) {
+        providerFileManager.insertImageToStore(photoInfo)
+    }
+
+Proses penyimpanan di galeri dilakukan oleh kode di bawah ini.
+
+private fun insertToStore(fileInfo: FileInfo, contentUri: Uri, contentValues: ContentValues) {
+    executor.execute {
+        val insertedUri = contentResolver.insert(contentUri, contentValues)
+        insertedUri?.let {
+            val inputStream = contentResolver.openInputStream(fileInfo.uri)
+            val outputStream = contentResolver.openOutputStream(insertedUri)
+            IOUtils.copy(inputStream, outputStream)
+        }
+    }
+}
+
+
+2. In your FileInfo.kt, there are 5 attributes. On the first attribute, what does the URI
+refer to? And on the fourth attribute, what does relativePath refer to?
+
+URI adalah alamat sementara yang di buat sistem android yang akan menyimpan foto secara sementara yang di capture.
+
+relativePath sesuai namanya adalah path penyimpanan hasil foto yang telah di capture yang di mana akan menjadi file permanen di galeri.
+
+3. [Bonus] Explain the chronological order from when a user takes a picture until
+the file is stored in the MediaStore.
+
+Pertama user akan menekan tombol untuk mengambil foto.
+
+Kedua akan mengenerate
+
+nama file
+
+file kosong di folder private app
+
+URI FileProvider (untuk kamera)
+
+relativePath
+
+mimeType = “image/jpeg”
+
+Yang menjadi sebuah objek photoInfo
+
+Ketiga kamera akan di buka menggunakan URI.
+
+Keempat kamera akan selesai mengambil gambar.
+
+Kelima file baru akan di tambahkan ke MediaStore.
+
+Keenam file sementara dari FileProvider akan di salin ke file baru di MediaStore.
+
+Ketujuh maka file pun akhirnya disimpan dan dapat muncul di galeri.
+
+
+
