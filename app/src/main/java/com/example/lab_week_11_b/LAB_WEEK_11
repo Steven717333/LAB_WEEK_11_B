@@ -38,15 +38,15 @@ Pertama user akan menekan tombol untuk mengambil foto.
 
 Kedua akan mengenerate
 
-nama file
+-nama file
 
-file kosong di folder private app
+-file kosong di folder private app
 
-URI FileProvider (untuk kamera)
+-URI FileProvider (untuk kamera)
 
-relativePath
+-relativePath
 
-mimeType = “image/jpeg”
+-mimeType = “image/jpeg”
 
 Yang menjadi sebuah objek photoInfo
 
